@@ -1,5 +1,12 @@
 import knex from './knex'
 
-export default {
+const getRecords = (table) =>
+  knex.table(table).select('*')
 
+const getEvents = (table) =>
+  getRecords('events').orderBy('startedAt')
+
+
+export default {
+  getEvents
 }
