@@ -9,5 +9,4 @@ const createEvent = event =>
 
 export default {
   createEvent,
-  createEvent,
 }

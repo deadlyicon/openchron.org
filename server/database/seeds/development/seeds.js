@@ -1,95 +1,47 @@
-const fs = require('fs')
-const JSON = require('JSON2')
-const seeds = JSON.parse(fs.readFileSync(__dirname+'/seeds.json', 'utf8'))
+import moment from 'moment'
+import commands from '../../commands'
 
-exports.seed = (knex) => {
+console.log(commands.createEvent)
 
-  const truncateAllTables = () => {
-    return Promise.all([
-      knex.truncate('user_boards'),
-      knex.truncate('cards'),
-      knex.truncate('lists'),
-      knex.truncate('boards'),
-      knex.truncate('users'),
-      knex.truncate('invites')
-    ])
-  }
+const date = date => moment(date).valueOf()
 
-  const createUsers = () => {
-    return knex
-      .insert(seeds.users)
-      .into('users')
-      .returning('*')
-  }
+exports.seed = knex =>
+  commands.createEvent([
+    {
+      ownerId: 0,
+      title: 'National Aeronautics and Space Administration began operation',
+      startedAt: date('1958-10-01 00:00:00'),
+      completedAt: date('1958-10-01 00:00:00'),
+    },
+    {
+      ownerId: 0,
+      title: 'Pioneer I: First NASA launch.',
+      startedAt: date('1958-10-11 00:00:00'),
+      completedAt: date('1958-10-11 00:00:00'),
+    },
+    {
+      ownerId: 0,
+      title: 'NASA research pilot John McKay made the last flight in the X-1E',
+      startedAt: date('1958-11-07 00:00:00'),
+      completedAt: date('1958-11-07 00:00:00'),
+    },
+    {
+      ownerId: 0,
+      title: 'The United States launched Pioneer 3',
+      startedAt: date('1958-12-06 00:00:00'),
+      completedAt: date('1958-12-06 00:00:00'),
+    },
+    {
+      ownerId: 0,
+      title: 'An Air Force Atlas booster placed into orbit a communications relay satellite',
+      startedAt: date('1958-12-18 00:00:00'),
+      completedAt: date('1958-12-18 00:00:00'),
+    },
+    {
+      ownerId: 0,
+      title: 'he United States launched Vanguard 2',
+      startedAt: date('1959-02-17 00:00:00'),
+      completedAt: date('1959-02-17 00:00:00'),
+    },
+  ])
 
-  const createBoards = () => {
-    const boardRecords = seeds.boards.map(board => cloneWithout(board,['lists']))
-    return knex
-      .insert(boardRecords)
-      .into('boards')
-      .returning('*')
-      .then(createListsAndCardsForBoards)
-  }
-
-  const createListsAndCardsForBoards = (boardRecords) => {
-    const listRecords = []
-    const cardRecordsForList = []
-    seeds.boards.forEach((board, index) => {
-      const boardRecord = boardRecords[index]
-      board.lists.forEach((list, index) => {
-        const listRecord = cloneWithout(list,['cards'])
-        listRecord.board_id = boardRecord.id
-        listRecord.order = index
-        listRecords.push(listRecord)
-        cardRecordsForList.push(list.cards.map(card => cloneWithout(card, [])))
-      })
-    })
-    const createCardsForLists = (listRecords) => {
-      const cardRecords = []
-      listRecords.forEach((listRecord, index) => {
-        cardRecordsForList[index].forEach((cardRecord, index) => {
-          cardRecord.list_id = listRecord.id
-          cardRecord.board_id = listRecord.board_id
-          cardRecord.order = index
-          cardRecords.push(cardRecord)
-        })
-      })
-      return knex
-        .insert(cardRecords)
-        .into('cards')
-    }
-    return knex
-      .insert(listRecords)
-      .into('lists')
-      .returning('*')
-      .then(createCardsForLists)
-      .then(() => boardRecords)
-  }
-
-  const createUsersAndBoards = () => {
-    return Promise.all([
-      createUsers(),
-      createBoards(),
-    ])
-  }
-
-  const addEachUserToEachBoard = ([users, boards]) => {
-    const records = []
-    users.forEach(user => {
-      boards.forEach(board => {
-        records.push({board_id: board.id, user_id: user.id})
-      })
-    })
-    return knex.table('user_boards').insert(records)
-  }
-
-  return truncateAllTables()
-    .then(createUsersAndBoards)
-    .then(addEachUserToEachBoard)
-};
-
-const cloneWithout = (object, keys) => {
-  const clone = Object.assign({}, object)
-  keys.forEach(key => { delete clone[key] })
-  return clone
-}

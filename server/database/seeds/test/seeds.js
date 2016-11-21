@@ -3,7 +3,7 @@ import commands from '../../commands'
 
 const date = date => moment(date).valueOf().toString()
 
-const createEvents = () =>
+exports.seed = knex =>
   commands.createEvent([
     {
       ownerId: 0,
@@ -24,10 +24,3 @@ const createEvents = () =>
       completedAt: date('1986-01-27 11:56:00'),
     },
   ])
-
-exports.seed = knex =>
-  createEvents()
-  .then(events => {
-    // console.log(`created ${events.length} events`)
-  })
-
