@@ -1,7 +1,7 @@
 import './Timeline.sass'
 import React, { Component } from 'react'
-import moment from 'moment'
 import Time from './Time'
+import TimeDuration from './TimeDuration'
 import Inspect from './Inspect'
 import HorizontalTimeline from './HorizontalTimeline'
 import VerticalTimeline from './VerticalTimeline'
@@ -18,12 +18,17 @@ export default class Timeline extends Component {
     this.setState({ start, end })
   }
   render(){
-    const events = this.props.events
+    const { events } = this.props
+    const { start, end } = this.state
     return <div>
-      <div>start: <Time time={this.state.start}/></div>
-      <div>end: <Time time={this.state.end}/></div>
-      <div>duration: {moment(this.state.start).from(moment(this.state.end), true)}</div>
-      <HorizontalTimeline events={events} />
+      <div>start: <Time time={start}/></div>
+      <div>end: <Time time={end}/></div>
+      <div>duration: <TimeDuration from={start} to={end}/></div>
+      <HorizontalTimeline
+        start={start}
+        end={end}
+        events={events}
+      />
       <VerticalTimeline events={events} />
     </div>
   }
@@ -33,7 +38,6 @@ const getStartAndEndFromEvents = events => {
   if (events.length === 0) return {start: 0, end: 0}
   let start, end
   events.forEach(event => {
-    console.log('??', event)
     start = start === undefined ? event.startedAt :
       event.startedAt < start ? event.startedAt : start
 
