@@ -1,9 +1,10 @@
-const moment = require('moment')
+import moment from 'moment'
+import commands from '../../commands'
 
-exports.seed = (knex) => {
-  const date = date => moment(date).valueOf()
+const date = date => moment(date).valueOf().toString()
 
-  const eventFixtures = [
+const createEvents = () =>
+  commands.createEvent([
     {
       ownerId: 0,
       title: 'Hitch slepts soundly',
@@ -12,7 +13,7 @@ exports.seed = (knex) => {
     },
     {
       ownerId: 0,
-      title: 'A dog was bleeding',
+      title: 'Spirit walked among his neighbors',
       startedAt: date('1986-01-13 03:10:00'),
       completedAt: date('1986-01-21 03:10:00'),
     },
@@ -22,15 +23,11 @@ exports.seed = (knex) => {
       startedAt: date('1986-01-19 02:13:00'),
       completedAt: date('1986-01-27 11:56:00'),
     },
-  ]
+  ])
 
-  const createEvents = () =>
-    knex
-      .insert(eventFixtures)
-      .into('events')
-      .returning('*')
-
-  return createEvents().then(events => {
-    console.log(`created ${events.length} events`)
+exports.seed = knex =>
+  createEvents()
+  .then(events => {
+    // console.log(`created ${events.length} events`)
   })
-}
+

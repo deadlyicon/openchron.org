@@ -11,7 +11,6 @@ server.use(express.static(publicPath))
 
 import database from './database'
 server.get('/api/events', (request, response) => {
-  console.log(database.queries.getEvents()+'')
   database.queries.getEvents()
     .then(events => {
       response.json(events)
