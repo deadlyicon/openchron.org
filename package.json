@@ -6,7 +6,7 @@
   "dependencies": {
     "knex": "^0.12.6",
     "pg": "^6.1.0",
-    "webappatron": "^0.0.1"
+    "webappatron": "github:deadlyicon/webappatron"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
