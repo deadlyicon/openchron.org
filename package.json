@@ -1,0 +1,30 @@
+{
+  "name": "openchron.org",
+  "version": "0.0.1",
+  "description": "open timeline of all chronological events",
+  "main": "dist/server",
+  "dependencies": {
+    "webappatron": "^0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "webappatron test",
+    "start": "webappatron start",
+    "build": "webappatron build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deadlyicon/openchron.org.git"
+  },
+  "keywords": [
+    "chronological",
+    "events",
+    "timeline"
+  ],
+  "author": "Jared Grippe <jared@deadlyicon.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deadlyicon/openchron.org/issues"
+  },
+  "homepage": "https://github.com/deadlyicon/openchron.org#readme"
+}
