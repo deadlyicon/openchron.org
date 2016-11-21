@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
-import reactPng from '../images/react.png'
+import Timeline from './Timeline'
 
 export default class Root extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      events: []
+    }
+    this.loadEvents()
+  }
+
+  loadEvents(){
+    fetch('/api/events').then( events => {
+      this.setState({events})
+    })
+  }
+
   render(){
     return <div>
-      <ReactImage />
+      <Timeline events={this.state.events} />
     </div>
   }
 }
-
-const ReactImage = () => (
-  <div className="webappatron-banner" >
-    <h1>webappatron</h1>
-    <h2>&</h2>
-    <img src={reactPng} />
-  </div>
-)

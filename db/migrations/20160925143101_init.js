@@ -13,8 +13,8 @@ exports.up = (knex, Promise) =>
       table.increments('id').primary()
       table.integer('ownerId')
       table.string('title')
-      table.integer('startedAt').index()
-      table.integer('completedAt').index()
+      table.bigint('startedAt').index()
+      table.bigint('completedAt').index()
     }),
 
     knex.schema.createTable('timelines', (table) => {
