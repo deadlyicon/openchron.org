@@ -44,5 +44,10 @@ const getStartAndEndFromEvents = events => {
     end = end === undefined ? event.completedAt :
       event.completedAt > end ? event.completedAt : end
   })
+
+  const padding = ((end - start) / 100) * 5
+  console.log({start, end, padding})
+  start = start - padding
+  end = end + padding
   return { start, end }
 }
