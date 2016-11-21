@@ -11,9 +11,11 @@ export default class Root extends Component {
   }
 
   loadEvents(){
-    fetch('/api/events').then( events => {
-      this.setState({events})
-    })
+    fetch('/api/events')
+      .then( response => response.json())
+      .then(events => {
+        this.setState({events})
+      })
   }
 
   render(){
